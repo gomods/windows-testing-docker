@@ -36,4 +36,4 @@ RUN Write-Host ('Downloading {0} ...' -f $env:GIT_DOWNLOAD_URL); \
 	Write-Host 'Verifying install ...'; \
 	Write-Host '  git --version'; git --version; \
 	\
-    Write-Host 'Complete.';
+	Write-Host 'Complete.';
