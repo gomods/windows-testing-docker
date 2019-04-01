@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'win18034'
+  vmImage: 'win1803'
 
 variables:
   imageName: 'athens-win-test:$(build.buildId)'
