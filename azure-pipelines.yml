@@ -13,5 +13,7 @@ variables:
   imageName: 'athens-win-test:$(build.buildId)'
 
 steps:
-- script: docker build -f Dockerfile -t $(imageName) .
+- script: |
+    echo "docker build"
+    docker build --isolation=hyperv -f Dockerfile -t $(imageName) .
   displayName: 'docker build'
