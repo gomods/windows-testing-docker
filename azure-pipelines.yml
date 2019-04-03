@@ -18,6 +18,16 @@ steps:
 - script: |
     echo "docker build"
     docker build --isolation=hyperv -f Dockerfile -t $(imageName) .
-    echo "docker tag for DockerHub"
+    echo "dockerhub login"
+    docker login -u $(dockerHubUsername) -p $(dockerHubPassword)
+    echo "tag for dockerhub"
     docker tag $(imageName) $(dockerHubImageName)
+    echo "push to dockerhub"
     docker push $(dockerHubImageName)
+
+    echo "ACR login"
+    az acr login --name $(acrName)
+    echo "tag for ACR"
+    docker tag $(imageName) $(acrImageName)
+    docker push $(acrImageName)
+
