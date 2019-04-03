@@ -31,3 +31,5 @@ steps:
     docker tag $(imageName) $(acrImageName)
     docker push $(acrImageName)
 
+    echo "done with dockerhub and ACR push"
+
