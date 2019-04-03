@@ -11,9 +11,13 @@ pool:
 
 variables:
   imageName: 'athens-win-test:$(build.buildId)'
+  dockerHubImageName: 'gomods/$(imageName)'
+  acrImageName: 'gomods/$(imageName)'
 
 steps:
 - script: |
     echo "docker build"
     docker build --isolation=hyperv -f Dockerfile -t $(imageName) .
-  displayName: 'docker build'
+    echo "docker tag for DockerHub"
+    docker tag $(imageName) $(dockerHubImageName)
+    docker push $(dockerHubImageName)
