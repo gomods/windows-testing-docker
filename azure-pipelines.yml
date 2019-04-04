@@ -15,9 +15,9 @@ variables:
   acrImageName: 'gomods/$(imageName)'
   
 steps:
-- script: choco install azure-cli
-
 - script: |
+    choco install azure-cli
+    refreshenv
     echo "docker build"
     docker build --isolation=hyperv -f Dockerfile -t $(imageName) .
     echo "dockerhub login"
