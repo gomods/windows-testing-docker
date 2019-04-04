@@ -17,7 +17,6 @@ variables:
 steps:
 - script: choco install azure-cli
 
-steps:
 - script: |
     echo "docker build"
     docker build --isolation=hyperv -f Dockerfile -t $(imageName) .
@@ -35,4 +34,3 @@ steps:
     docker push $(acrImageName)
 
     echo "done with dockerhub and ACR push"
-
