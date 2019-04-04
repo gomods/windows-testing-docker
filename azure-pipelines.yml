@@ -13,10 +13,12 @@ variables:
   imageName: 'athens-win-test:$(build.buildId)'
   dockerHubImageName: 'gomods/$(imageName)'
   acrImageName: 'gomods/$(imageName)'
+  
+steps:
+- script: choco install azure-cli
 
 steps:
 - script: |
-    choco install azure-cli
     echo "docker build"
     docker build --isolation=hyperv -f Dockerfile -t $(imageName) .
     echo "dockerhub login"
