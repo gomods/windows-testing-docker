@@ -18,6 +18,8 @@ steps:
 - script: |
     choco install azure-cli
     refreshenv
+    
+- script: |
     echo "docker build"
     docker build --isolation=hyperv -f Dockerfile -t $(imageName) .
     echo "dockerhub login"
@@ -26,11 +28,9 @@ steps:
     docker tag $(imageName) $(dockerHubImageName)
     echo "push to dockerhub"
     docker push $(dockerHubImageName)
-
     echo "ACR login"
     az acr login --name $(acrName)
     echo "tag for ACR"
     docker tag $(imageName) $(acrImageName)
     docker push $(acrImageName)
-
     echo "done with dockerhub and ACR push"
