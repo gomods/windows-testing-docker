@@ -17,7 +17,9 @@ variables:
 steps:
 - script: |
     choco install azure-cli
+    gci 'C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin'
     refreshenv
+    $env:PATH -split ;
     
 - script: |
     echo "docker build"
