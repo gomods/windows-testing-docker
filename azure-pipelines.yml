@@ -19,7 +19,7 @@ steps:
     choco install azure-cli
     gci 'C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin'
     refreshenv
-    $env:PATH -split ;
+    $env:PATH -split ";"
     
 - powershell: |
     echo "docker build"
