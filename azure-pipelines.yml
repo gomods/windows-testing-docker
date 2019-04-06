@@ -27,7 +27,8 @@ steps:
     echo "push to dockerhub"
     docker push $(dockerHubImageName)
     echo "ACR login"
-    # for some reason choco install azure-cli does not add the az dir tothe PATH
+    # for some reason choco install azure-cli does not add the az dir to the PATH
+    # dir based on https://github.com/Azure/azure-cli/blob/dev/build_scripts/windows/Product.wxs
     & "C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin\az.cmd" acr login --name $(acrName)
     echo "tag for ACR"
     docker tag $(imageName) $(acrImageName)
