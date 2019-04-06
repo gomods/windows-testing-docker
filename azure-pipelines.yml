@@ -18,10 +18,6 @@ steps:
 - powershell: |
     choco install azure-cli
     gci 'C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin'
-    refreshenv
-    $env:PATH -split ";"
-    
-- powershell: |
     echo "docker build"
     docker build --isolation=hyperv -f Dockerfile -t $(imageName) .
     echo "dockerhub login"
@@ -31,7 +27,8 @@ steps:
     echo "push to dockerhub"
     docker push $(dockerHubImageName)
     echo "ACR login"
-    az acr login --name $(acrName)
+    # for some reason choco install azure-cli does not add the az dir tothe PATH
+    & "C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin\az.cmd" acr login --name $(acrName)
     echo "tag for ACR"
     docker tag $(imageName) $(acrImageName)
     docker push $(acrImageName)
