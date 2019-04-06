@@ -15,13 +15,13 @@ variables:
   acrImageName: 'gomods/$(imageName)'
   
 steps:
-- script: |
+- powershell: |
     choco install azure-cli
     gci 'C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin'
     refreshenv
     $env:PATH -split ;
     
-- script: |
+- powershell: |
     echo "docker build"
     docker build --isolation=hyperv -f Dockerfile -t $(imageName) .
     echo "dockerhub login"
