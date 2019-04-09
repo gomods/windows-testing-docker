@@ -12,25 +12,30 @@ pool:
 variables:
   imageName: 'athens-win-test:$(build.buildId)'
   dockerHubImageName: 'gomods/$(imageName)'
-  acrImageName: 'gomods/$(imageName)'
-  
+  acrRegistryName: 'gomods'
+  acrLoginServer: '$(acrRegistryName).azurecr.io'
+  acrImageName: '$(acrLoginServer)/$(imageName)'
+
 steps:
 - powershell: |
     choco install azure-cli
     gci 'C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin'
     echo "docker build"
     docker build --isolation=hyperv -f Dockerfile -t $(imageName) .
-    echo "dockerhub login"
-    docker login -u $(dockerHubUsername) -p $(dockerHubPassword)
-    echo "tag for dockerhub"
-    docker tag $(imageName) $(dockerHubImageName)
-    echo "push to dockerhub"
-    docker push $(dockerHubImageName)
-    echo "ACR login"
+    # echo "dockerhub login"
+    # docker login -u $(dockerHubUsername) -p $(dockerHubPassword)
+    # echo "tag for dockerhub"
+    # docker tag $(imageName) $(dockerHubImageName)
+    # echo "push to dockerhub"
+    # docker push $(dockerHubImageName)
+    # echo "done with dockerhub and ACR push"
     # for some reason choco install azure-cli does not add the az dir to the PATH
     # dir based on https://github.com/Azure/azure-cli/blob/dev/build_scripts/windows/Product.wxs
-    & "C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin\az.cmd" acr login --name $(acrName)
+    echo "Azure CLI Login"
+    & "C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin\az.cmd" login --service-principal -u $(acr-appId) -p $(acr-password) --tenant $(acr-tenant)
+    echo "ACR login"
+    & "C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin\az.cmd" acr login --name $(acrRegistryName)
     echo "tag for ACR"
     docker tag $(imageName) $(acrImageName)
-    docker push $(acrImageName)
-    echo "done with dockerhub and ACR push"
+    docker push $(acrImageName)    
+    echo "done with ACR push"
